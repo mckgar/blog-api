@@ -33,7 +33,7 @@ router.post('/', [
         const isValid = await bcrypt.compare(req.body.password, user.password);
         if (isValid) {
           const opts = {};
-          opts.expiresIn = 120;
+          opts.expiresIn = 600;
           const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET, opts);
           return res.status(200).json(
             {
