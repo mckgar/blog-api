@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/user', routes.user);
 app.use('/login', routes.login);
+app.use('/post', routes.post);
 
 app.use((req, res, next) => {
   return res.status(404).json(
