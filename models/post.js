@@ -22,6 +22,9 @@ const PostSchema = mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    date_edited: {
+      type: Date,
+    },
     published: {
       type: Boolean,
       required: true,
