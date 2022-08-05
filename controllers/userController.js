@@ -168,6 +168,10 @@ exports.update_user = [
     .trim()
     .escape()
     .optional({ nullable: true }),
+  body('priv_passcode')
+    .trim()
+    .escape()
+    .optional({ nullable: true }),
   async (req, res, next) => {
     if (req.params.userid !== req.user.username) {
       return res.status(403).json(
@@ -194,6 +198,16 @@ exports.update_user = [
       if (req.body.email) updates.email = req.body.email;
       if (req.body.first_name) updates.first_name = req.body.first_name;
       if (req.body.surname) updates.surname = req.body.surname;
+      // Not a good way to do this, but easy for this practice project
+      // Perhaps better to let admins have the ability to grant roles
+      // or to implement a more robust verification process
+      if (req.body.priv_passcode && 
+        req.body.priv_passcode === process.env.BLOGGER_PASSWORD) {
+          updates.role = 'blogger';
+      } else if (req.body.priv_passcode && 
+        req.body.priv_passcode === process.env.ADMIN_PASSWORD) {
+          updates.role = 'admin';
+      }
       await User.findOneAndUpdate({ username: req.params.userid }, updates)
       return res.status(200).json(
         {
